@@ -1,8 +1,11 @@
 import { produce } from 'immer';
 
 function reducer(state, action) {
-  const nextState = produce(state, (draftState) => {
+  return produce(state, (draftState) => {
     switch (action.type) {
+      case 'initialize': {
+        return action.items;
+      }
       case 'add-item': {
         const itemIndex = state.findIndex((item) => item.id === action.item.id);
 
@@ -24,18 +27,8 @@ function reducer(state, action) {
         draftState.splice(itemIndex, 1);
         return;
       }
-      case 'save-items': {
-        return action.payload;
-      }
     }
   });
-  //Save the state to localStorage
-  // Save the new state to localStorage after every action
-  if (typeof window !== 'undefined' && window.localStorage) {
-    localStorage.setItem('cart-items', JSON.stringify(nextState));
-  }
-
-  return nextState;
 }
 
 export default reducer;
