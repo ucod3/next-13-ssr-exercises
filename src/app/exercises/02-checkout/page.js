@@ -9,13 +9,20 @@ import './styles.css';
 
 function CheckoutExercise() {
   const [items, dispatch] = React.useReducer(reducer, []);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
     const savedItems =
       typeof window !== 'undefined' && window.localStorage
-        ? JSON.parse(localStorage.getItem('cartItems'))
+        ? JSON.parse(localStorage.getItem('cart-items'))
         : [];
-    dispatch({ type: 'save-items', payload: savedItems });
+    if (savedItems && savedItems.length > 0) {
+      dispatch({
+        type: 'save-items',
+        payload: savedItems,
+      });
+    }
+    setIsLoading(false);
   }, []);
 
   return (
@@ -41,6 +48,7 @@ function CheckoutExercise() {
         <CheckoutFlow
           items={items}
           taxRate={0.15}
+          isLoading={isLoading}
           handleDeleteItem={(item) =>
             dispatch({
               type: 'delete-item',
