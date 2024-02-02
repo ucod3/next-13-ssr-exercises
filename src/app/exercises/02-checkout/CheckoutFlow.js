@@ -3,8 +3,8 @@ import React from 'react';
 import Spinner from '../../../components/Spinner';
 import CartTable from './CartTable';
 
-function CheckoutFlow({ items, taxRate, handleDeleteItem, isLoading }) {
-  if (isLoading) {
+function CheckoutFlow({ items, taxRate, handleDeleteItem }) {
+  if (items === null) {
     return (
       <div className='checkout-flow empty'>
         <Spinner />
