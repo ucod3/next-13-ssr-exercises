@@ -32,7 +32,7 @@ function reducer(state, action) {
   //Save the state to localStorage
   // Save the new state to localStorage after every action
   if (typeof window !== 'undefined' && window.localStorage) {
-    localStorage.setItem('cartItems', JSON.stringify(nextState));
+    localStorage.setItem('cart-items', JSON.stringify(nextState));
   }
 
   return nextState;
