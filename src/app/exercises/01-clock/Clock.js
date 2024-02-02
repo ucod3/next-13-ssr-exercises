@@ -4,7 +4,7 @@ import format from 'date-fns/format';
 import Spinner from '../../../components/Spinner';
 
 function Clock() {
-  const [time, setTime] = React.useState();
+  const [time, setTime] = React.useState(new Date());
 
   React.useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -17,7 +17,9 @@ function Clock() {
   }, []);
 
   return (
-    <p className='clock'>{time ? format(time, 'hh:mm:ss.S a') : <Spinner />}</p>
+    <p suppressHydrationWarning className='clock'>
+      {format(time, 'hh:mm:ss.S a')}
+    </p>
   );
 }
 
