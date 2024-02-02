@@ -8,22 +8,23 @@ import CheckoutFlow from './CheckoutFlow';
 import './styles.css';
 
 function CheckoutExercise() {
-  const [items, dispatch] = React.useReducer(reducer, []);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [items, dispatch] = React.useReducer(reducer, null);
 
   React.useEffect(() => {
-    const savedItems =
-      typeof window !== 'undefined' && window.localStorage
-        ? JSON.parse(localStorage.getItem('cart-items'))
-        : [];
-    if (savedItems && savedItems.length > 0) {
-      dispatch({
-        type: 'save-items',
-        payload: savedItems,
-      });
-    }
-    setIsLoading(false);
+    const savedItems = JSON.parse(window.localStorage.getItem('cart-items'));
+
+    dispatch({
+      type: 'initialize',
+      items: savedItems === null ? [] : savedItems,
+    });
   }, []);
+
+  React.useEffect(() => {
+    if (items === null) {
+      return;
+    }
+    window.localStorage.setItem('cart-items', JSON.stringify(items));
+  }, [items]);
 
   return (
     <>
@@ -48,7 +49,6 @@ function CheckoutExercise() {
         <CheckoutFlow
           items={items}
           taxRate={0.15}
-          isLoading={isLoading}
           handleDeleteItem={(item) =>
             dispatch({
               type: 'delete-item',
